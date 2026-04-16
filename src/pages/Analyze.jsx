@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ResumeUploader from '../components/ResumeUploader';
 import ResumeFeedback from '../components/ResumeFeedback';
 import { extractTextFromFile } from '../utils/ocrService';
 import { generateLaTeXResume } from '../utils/latexGenerator';
 
 export default function Analyze() {
+  const navigate = useNavigate();
   const [analysis, setAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [extractedText, setExtractedText] = useState('');
@@ -86,23 +88,36 @@ export default function Analyze() {
             </button>
 
             {extractedText && (
-              <button 
-                onClick={() => {
-                  const tex = generateLaTeXResume(extractedText);
-                  const element = document.createElement("a");
-                  const file = new Blob([tex], {type: 'text/plain'});
-                  element.href = URL.createObjectURL(file);
-                  element.download = "ats_resume.tex";
-                  document.body.appendChild(element);
-                  element.click();
-                }}
-                className="bg-primary text-gray-800 px-6 py-3 rounded-lg hover:bg-primary-dark transition-all flex items-center space-x-2 font-bold shadow-md transform hover:-translate-y-1"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                <span>Download ATS LaTeX Resume</span>
-              </button>
+              <div className="flex gap-4">
+                <button 
+                  onClick={() => {
+                    const tex = generateLaTeXResume(extractedText);
+                    const element = document.createElement("a");
+                    const file = new Blob([tex], {type: 'text/plain'});
+                    element.href = URL.createObjectURL(file);
+                    element.download = "ats_resume.tex";
+                    document.body.appendChild(element);
+                    element.click();
+                  }}
+                  className="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-black transition-all flex items-center space-x-2 font-bold shadow-md transform hover:-translate-y-1"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  <span>LaTeX Source</span>
+                </button>
+
+                <button 
+                  onClick={() => navigate('/ats-resume', { state: { extractedText } })}
+                  className="bg-primary text-gray-800 px-6 py-3 rounded-lg hover:bg-primary-dark transition-all flex items-center space-x-2 font-bold shadow-md transform hover:-translate-y-1"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <span>Build ATS Resume</span>
+                </button>
+              </div>
             )}
           </div>
           

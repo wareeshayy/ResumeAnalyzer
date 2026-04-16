@@ -5,6 +5,7 @@ import Signup from './pages/Signup'; // Add this import
 import Dashboard from './pages/Dashboard';
 import Analyze from './pages/Analyze';
 import Jobs from './pages/Jobs';
+import AtsResume from './pages/AtsResume';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/analyze" element={<Analyze />} />
         <Route path="/jobs" element={<Jobs />} />
+        <Route path="/ats-resume" element={<AtsResume />} />
       </Routes>
     </Router>
   );

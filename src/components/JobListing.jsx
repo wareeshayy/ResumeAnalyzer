@@ -13,7 +13,7 @@ export default function JobListing({ title, company, description }) {
       <p className="mt-3 text-gray-700 line-clamp-3">{description}</p>
       <div className="mt-4 flex justify-between items-center">
         <span className="text-sm text-gray-500">Posted 2 days ago</span>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+        <button className="bg-primary text-gray-800 px-4 py-2 rounded-lg hover:bg-primary-dark transition-all font-bold shadow-sm">
           View Details
         </button>
       </div>

@@ -3,7 +3,7 @@ export default function ResumeCard({ name, score, date }) {
     <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
       <div className="flex justify-between items-start">
         <h3 className="font-medium text-lg">{name}</h3>
-        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm">
+        <span className="bg-primary-light text-gray-800 px-2 py-1 rounded-full text-sm font-semibold">
           {score}/100
         </span>
       </div>
@@ -11,12 +11,12 @@ export default function ResumeCard({ name, score, date }) {
       <div className="mt-4">
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div 
-            className="bg-blue-600 h-2 rounded-full" 
+            className="bg-primary h-2 rounded-full" 
             style={{ width: `${score}%` }}
           ></div>
         </div>
       </div>
-      <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+      <button className="mt-4 w-full bg-primary text-gray-800 py-2 rounded-lg hover:bg-primary-dark transition-all font-bold shadow-sm">
         View Details
       </button>
     </div>

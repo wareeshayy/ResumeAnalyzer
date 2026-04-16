@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import ResumeUploader from '../components/ResumeUploader';
+import ResumeFeedback from '../components/ResumeFeedback';
 import { extractTextFromFile } from '../utils/ocrService';
 import { generateLaTeXResume } from '../utils/latexGenerator';
 

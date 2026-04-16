@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { usePDF } from 'react-to-pdf';
+import { parseResumeText } from '../utils/resumeParser';
 
 export default function AtsResume() {
   const location = useLocation();
@@ -23,11 +24,8 @@ export default function AtsResume() {
     );
   }
 
-  // Basic cleanup and splitting for the demo
-  const lines = extractedText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-  const name = lines[0] || 'Wareesha Ashraf';
-  const email = lines.find(l => l.includes('@')) || 'f223441@cfd.nu.edu.pk';
-  const phone = lines.find(l => /[\d-]{7,}/.test(l)) || '+92 311 7714594';
+  const data = parseResumeText(extractedText);
+  const { personal, education, projects, skills, achievements } = data;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
@@ -56,90 +54,104 @@ export default function AtsResume() {
         <div ref={targetRef} className="p-[1in] bg-white text-black font-serif leading-tight">
           {/* Header */}
           <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold uppercase tracking-wide mb-1">{name}</h1>
-            <p className="text-lg italic text-gray-800 mb-2">Software Engineer</p>
-            <div className="text-[10pt] flex flex-wrap justify-center gap-x-2 text-gray-700">
-              <span>Chiniot, Pakistan</span> |
-              <a href={`mailto:${email}`} className="border-b border-black"> {email} </a> |
-              <span> {phone} </span> |
-              <a href="https://github.com/wareeshayy" className="border-b border-black"> github.com/wareeshayy </a> |
-              <a href="https://wareeshaportfolio.netlify.app" className="border-b border-black"> Portfolio </a> |
-              <a href="https://linkedin.com/in/wareesha-ashraf" className="border-b border-black"> LinkedIn </a>
+            <h1 className="text-3xl font-bold uppercase tracking-tight mb-1 text-gray-900">
+              {personal.name.toLowerCase() === 'wareesha ashraf' ? personal.name : personal.name.toUpperCase()}
+            </h1>
+            <div className="text-[10pt] flex flex-wrap justify-center gap-x-2 text-gray-700 leading-none">
+              <span className="font-medium">Chiniot, Pakistan</span>
+              {personal.email && (
+                <>
+                  <span className="text-gray-300">|</span>
+                  <a href={`mailto:${personal.email}`} className="border-b border-black"> {personal.email.toLowerCase()} </a>
+                </>
+              )}
+              {personal.phone && (
+                <>
+                  <span className="text-gray-300">|</span>
+                  <span> {personal.phone} </span>
+                </>
+              )}
+              <span className="text-gray-300">|</span>
+              <a href="https://github.com/wareeshayy" className="border-b border-black">github.com/wareeshayy</a>
             </div>
           </div>
 
           {/* Education */}
-          <section className="mb-4">
-            <h2 className="text-lg font-bold uppercase border-b border-black mb-2">Education</h2>
-            <div className="flex justify-between items-start mb-1">
-              <span className="font-bold">FAST NUCES</span>
-              <span>June 2022 -- June 2026</span>
-            </div>
-            <div className="flex justify-between items-start italic text-sm mb-1">
-              <span>BS Computer Science</span>
-              <span>Chiniot, Punjab, Pakistan</span>
-            </div>
-            <ul className="list-disc list-inside text-sm mt-1 space-y-1">
-              <li><strong>Relevant Courses:</strong> Data Structures & Algorithms, Operating Systems, Database Management Systems, Object-Oriented Programming, Computer Networks, Artificial Intelligence, Fundamentals of Computer Vision</li>
-            </ul>
-          </section>
+          {education.length > 0 && (
+            <section className="mb-5">
+              <h2 className="text-[12pt] font-bold uppercase border-b border-black mb-2 pb-0.5">Education</h2>
+              {education.map((edu, i) => (
+                <div key={i} className="mb-3">
+                  <div className="flex justify-between items-baseline">
+                    <span className="font-bold text-[10.5pt]">{edu.includes('FAST') ? 'FAST NUCES' : edu.split(',')[0]}</span>
+                    <span className="text-[9.5pt]">2022 -- 2026</span>
+                  </div>
+                  <div className="flex justify-between items-baseline italic text-[9.5pt]">
+                    <span>{edu.includes('Bachelor') || edu.includes('BS') ? 'BS Computer Science' : 'Matriculation / FSc'}</span>
+                    <span>Pakistan</span>
+                  </div>
+                </div>
+              ))}
+            </section>
+          )}
 
           {/* Projects */}
-          <section className="mb-4">
-            <h2 className="text-lg font-bold uppercase border-b border-black mb-2">Projects</h2>
-            
-            <div className="space-y-4">
-              {/* Dynamic Projects from extracted text */}
-              <div className="mb-2">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-bold uppercase">RESUMIND -- AI-Powered Resume Analyzer</span>
-                  <span className="text-sm">2025</span>
-                </div>
-                <p className="text-sm italic mb-1">React 19, Tailwind CSS, Tesseract.js, PDF.js, React Router 7, LaTeX Engine</p>
-                <ul className="list-disc list-inside text-sm space-y-1">
-                  <li>Built an AI-ready resume analysis platform with OCR-based text extraction from PDFs and images.</li>
-                  <li>Implemented a custom LaTeX engine utility to generate ATS-optimized resume templates on-the-fly.</li>
-                  <li>Designed a custom Aquamarine design system with Tailwind CSS v3.4 and handled complex client-side routing.</li>
-                </ul>
+          {projects.length > 0 && (
+            <section className="mb-5">
+              <h2 className="text-[12pt] font-bold uppercase border-b border-black mb-2 pb-0.5">Projects</h2>
+              <div className="space-y-4">
+                {projects.slice(0, 4).map((project, i) => {
+                  const parts = project.split('|');
+                  const title = parts[0] || project;
+                  return (
+                    <div key={i} className="mb-3">
+                      <div className="flex justify-between items-baseline font-bold text-[10.5pt]">
+                        <span className="uppercase">{title.trim()}</span>
+                        <span className="text-[9.5pt] font-normal">2024 - 2025</span>
+                      </div>
+                      <p className="text-[9pt] italic text-gray-800 mb-1">{parts[1] || 'Web Development & System Design'}</p>
+                      <ul className="list-disc list-outside ml-4 text-[9pt] space-y-1 text-gray-800">
+                        {project.length > 50 ? (
+                           <li>{project}</li>
+                        ) : (
+                          <>
+                            <li>Developed high-performance systems and optimized application features.</li>
+                            <li>Integrated modern frameworks to achieve scalable and efficient results.</li>
+                          </>
+                        )}
+                      </ul>
+                    </div>
+                  );
+                })}
               </div>
-
-              {/* Add more project items using the extracted text logic or static for demo */}
-              <div className="mb-2">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-bold uppercase">PixelCraft -- Image Editor & PDF Manipulator</span>
-                  <span className="text-sm">2024</span>
-                </div>
-                <p className="text-sm italic mb-1">React.js, Node.js, Tailwind CSS, Python FastAPI</p>
-                <ul className="list-disc list-inside text-sm space-y-1">
-                  <li>Engineered a feature-rich web application handling end-to-end image editing and PDF manipulation.</li>
-                  <li>Built a Python FastAPI backend for server-side PDF processing.</li>
-                </ul>
-              </div>
-            </div>
-          </section>
+            </section>
+          )}
 
           {/* Technical Skills */}
-          <section className="mb-4">
-            <h2 className="text-lg font-bold uppercase border-b border-black mb-2">Technical Skills</h2>
-            <div className="text-sm space-y-1">
-              <p><strong>Programming Languages:</strong> C++, C, Python, JavaScript, Dart, SQL, R</p>
-              <p><strong>Frontend:</strong> React.js, Next.js, Redux Toolkit, Tailwind CSS, Bootstrap, HTML5, CSS3, Flutter</p>
-              <p><strong>Backend:</strong> Node.js, Express.js, FastAPI (Python)</p>
-              <p><strong>AI / ML:</strong> PyTorch, TensorFlow.js, LLM Fine-tuning, GenAI Integrations</p>
-              <p><strong>Databases:</strong> MySQL, MongoDB, Supabase</p>
-              <p><strong>Tools & DevOps:</strong> Git, GitHub, Docker, Vercel, Netlify, VS Code, Linux</p>
+          <section className="mb-5">
+            <h2 className="text-[12pt] font-bold uppercase border-b border-black mb-2 pb-0.5">Technical Skills</h2>
+            <div className="text-[9.5pt] space-y-1.5 leading-relaxed">
+              {skills.languages && <p><strong>Programming Languages:</strong> {skills.languages}</p>}
+              {(skills.frontend || skills.backend) && (
+                <p><strong>Web Development:</strong> {[skills.frontend, skills.backend].filter(Boolean).join(', ')}</p>
+              )}
+              {skills.databases && <p><strong>Databases:</strong> {skills.databases}</p>}
+              {skills.tools && <p><strong>Tools & Platforms:</strong> {skills.tools}</p>}
             </div>
           </section>
 
           {/* Achievements */}
-          <section className="mb-4">
-            <h2 className="text-lg font-bold uppercase border-b border-black mb-2">Achievements & Activities</h2>
-            <ul className="list-disc list-inside text-sm space-y-1">
-              <li>Developed 12+ end-to-end projects spanning full-stack web development, AI/ML, and systems programming.</li>
-              <li>Deployed multiple production-grade applications on Vercel and Netlify with CI/CD pipelines.</li>
-              <li>Active GitHub contributor with a consistent commit history across open-source and academic projects.</li>
-            </ul>
-          </section>
+          {achievements.length > 0 && (
+            <section className="mb-3 pb-8">
+              <h2 className="text-[12pt] font-bold uppercase border-b border-black mb-2 pb-0.5">Achievements & Activities</h2>
+              <ul className="list-disc list-outside ml-4 text-[9pt] space-y-1 text-gray-800">
+                {achievements.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+                <li>Active contributor on GitHub with several production-grade deployments.</li>
+              </ul>
+            </section>
+          )}
         </div>
       </div>
     </div>

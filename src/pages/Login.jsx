@@ -56,9 +56,9 @@ export default function Login() {
                 </label>
               </div>
               
-              <a href="#" className="text-sm text-blue-600 hover:underline">
+              <Link to="/" className="text-sm text-blue-600 hover:underline">
                 Forgot password?
-              </a>
+              </Link>
             </div>
             
             <button

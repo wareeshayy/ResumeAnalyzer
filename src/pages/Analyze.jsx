@@ -1,7 +1,5 @@
-import { useState } from 'react';
-import ResumeUploader from '../components/ResumeUploader';
-import ResumeFeedback from '../components/ResumeFeedback';
 import { extractTextFromFile } from '../utils/ocrService';
+import { generateLaTeXResume } from '../utils/latexGenerator';
 
 export default function Analyze() {
   const [analysis, setAnalysis] = useState(null);
@@ -63,9 +61,9 @@ export default function Analyze() {
           
           {isLoading && (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
               <p className="text-lg">Analyzing your resume...</p>
-              <p className="text-gray-500">This may take a few moments</p>
+              <p className="text-gray-500 font-medium">Using OCR to extract content...</p>
             </div>
           )}
         </div>
@@ -73,16 +71,36 @@ export default function Analyze() {
         <div className="max-w-4xl mx-auto space-y-8">
           <ResumeFeedback score={analysis.score} feedback={analysis.feedback} />
           
-          <div className="flex justify-center">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
             <button 
               onClick={() => { setAnalysis(null); setExtractedText(''); }}
-              className="bg-gray-200 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors flex items-center space-x-2"
+              className="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors flex items-center space-x-2 border border-gray-200 font-medium"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
-              <span>Analyze Another Resume</span>
+              <span>Analyze Another</span>
             </button>
+
+            {extractedText && (
+              <button 
+                onClick={() => {
+                  const tex = generateLaTeXResume(extractedText);
+                  const element = document.createElement("a");
+                  const file = new Blob([tex], {type: 'text/plain'});
+                  element.href = URL.createObjectURL(file);
+                  element.download = "ats_resume.tex";
+                  document.body.appendChild(element);
+                  element.click();
+                }}
+                className="bg-primary text-gray-800 px-6 py-3 rounded-lg hover:bg-primary-dark transition-all flex items-center space-x-2 font-bold shadow-md transform hover:-translate-y-1"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>Download ATS LaTeX Resume</span>
+              </button>
+            )}
           </div>
           
           {extractedText && (

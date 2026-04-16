@@ -6,7 +6,7 @@ export default function Signup() {
       <div className="w-full max-w-md">
         {/* Logo/Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">RESUMIND</h1>
+          <h1 className="text-3xl font-bold text-primary-dark mb-2">RESUMIND</h1>
           <p className="text-gray-600">Build an Enterprise Ready AI Powered Applicant Tracking System</p>
         </div>
         
@@ -90,13 +90,13 @@ export default function Signup() {
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
               <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-                I agree to the <Link to="/" className="text-blue-600 hover:underline">Terms of Service</Link> and <Link to="/" className="text-blue-600 hover:underline">Privacy Policy</Link>
+                I agree to the <Link to="/" className="text-primary-dark font-bold hover:underline">Terms of Service</Link> and <Link to="/" className="text-primary-dark font-bold hover:underline">Privacy Policy</Link>
               </label>
             </div>
             
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
+              className="w-full bg-primary text-gray-800 py-3 px-4 rounded-lg font-bold hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary transition shadow-md"
             >
               Create Account
             </button>

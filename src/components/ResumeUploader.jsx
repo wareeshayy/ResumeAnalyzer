@@ -21,7 +21,7 @@ export default function ResumeUploader({ onUpload }) {
       {!file ? (
         <div 
           {...getRootProps()} 
-          className={`cursor-pointer p-8 ${isDragActive ? 'bg-blue-50' : ''}`}
+          className={`cursor-pointer p-8 rounded-lg transition-all ${isDragActive ? 'bg-primary-light border-primary' : 'hover:bg-gray-100'}`}
         >
           <input {...getInputProps()} />
           <div className="flex flex-col items-center justify-center space-y-2">
@@ -38,7 +38,7 @@ export default function ResumeUploader({ onUpload }) {
       ) : (
         <div className="space-y-4">
           <div className="flex items-center space-x-4 bg-white p-4 rounded-lg">
-            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-8 h-8 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>
             <div>
@@ -48,7 +48,7 @@ export default function ResumeUploader({ onUpload }) {
           </div>
           <button 
             onClick={() => onUpload(file)}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
+            className="w-full bg-primary text-gray-800 py-3 rounded-lg hover:bg-primary-dark transition-all flex items-center justify-center space-x-2 font-bold shadow-md transform hover:-translate-y-1"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />

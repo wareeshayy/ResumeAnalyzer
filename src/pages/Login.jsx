@@ -6,7 +6,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         {/* Logo/Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">RESUMIND</h1>
+          <h1 className="text-3xl font-bold text-primary-dark mb-2">RESUMIND</h1>
           <p className="text-gray-600">Build an Enterprise Ready AI Powered Applicant Tracking System</p>
         </div>
         
@@ -56,14 +56,14 @@ export default function Login() {
                 </label>
               </div>
               
-              <Link to="/" className="text-sm text-blue-600 hover:underline">
+              <Link to="/" className="text-sm text-primary-dark hover:underline font-medium">
                 Forgot password?
               </Link>
             </div>
             
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition"
+              className="w-full bg-primary text-gray-800 py-3 px-4 rounded-lg font-bold hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary transition shadow-md"
             >
               Log In
             </button>
@@ -72,7 +72,7 @@ export default function Login() {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Don't have an account?{' '}
-              <Link to="/signup" className="text-blue-600 font-medium hover:underline">
+              <Link to="/signup" className="text-primary-dark font-bold hover:underline">
                 Sign up
               </Link>
             </p>
